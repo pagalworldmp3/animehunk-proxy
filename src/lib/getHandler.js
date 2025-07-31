@@ -8,6 +8,7 @@ import withCORS from "./withCORS.js";
 import parseURL from "./parseURL.js";
 import proxyM3U8 from "./proxyM3U8.js";
 import { proxyTs } from "./proxyTS.js";
+import proxyRequest from "./proxyRequest.js";
 
 export default function getHandler(options, proxy) {
   const corsAnywhere = {
@@ -106,6 +107,7 @@ export default function getHandler(options, proxy) {
     }
 
     if (!/^\/https?:/.test(req.url) && !isValidHostName(location.hostname)) {
+      const web_server_url = process.env.PUBLIC_URL || "http://localhost:3000";
       const uri = new URL(req.url ?? web_server_url, "http://localhost:3000");
       if (uri.pathname === "/m3u8-proxy") {
         let headers = {};
